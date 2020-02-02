@@ -1,0 +1,197 @@
+<div class="container">
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <h3 style="text-align:center">
+      Sign Up
+    </h3>
+
+    <div class="form-group">
+      <!-- Name -->
+      <label for="username">Name: <span class="lblError">*</span></label>
+      <div class="controls">
+        <input
+          type="text"
+          id="username"
+          placeholder="Name"
+          class="form-control"
+          formControlName="name"
+        />
+        <p
+          class="lblError"
+          *ngIf="
+            signupForm.get('name').hasError('required') &&
+            !signupForm.get('name').pristine
+          "
+        >
+          Name is Required
+        </p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <!-- E-mail -->
+      <label for="email">E-mail: <span class="lblError">*</span></label>
+      <div class="controls">
+        <input
+          type="text"
+          id="email"
+          placeholder="E-mail"
+          class="form-control"
+          formControlName="email"
+        />
+        <p
+          class="lblError"
+          *ngIf="
+            signupForm.get('email').hasError('required') &&
+            !signupForm.get('email').pristine
+          "
+        >
+          Please provide your E-mail
+        </p>
+        <p
+          class="lblError"
+          *ngIf="
+            signupForm.get('email').hasError('email') &&
+            !signupForm.get('email').pristine
+          "
+        >
+          E-mail is Invalid
+        </p>
+
+        <p
+          class="lblError"
+          style="color:blue"
+          *ngIf="
+            signupForm.get('email').status == 'PENDING' &&
+            !signupForm.get('email').pristine
+          "
+        >
+          Checking...
+        </p>
+        <p
+          class="lblError"
+          style="color:green"
+          *ngIf="
+            signupForm.get('email').status == 'VALID' &&
+            !signupForm.get('email').pristine &&
+            !signupForm.get('email').value == ''
+          "
+        >
+          Email is Available
+        </p>
+      </div>
+    </div>
+
+    <div class="form-row" formGroupName="password_group">
+      <div class="col">
+        <div class="form-group">
+          <div class="control-group">
+            <!-- Password -->
+            <label for="password"
+              >Password: <span class="lblError">*</span></label
+            >
+            <div class="controls">
+              <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                class="form-control"
+                formControlName="password"
+              />
+              <p
+                class="lblError"
+                *ngIf="
+                  signupForm
+                    .get('password_group')
+                    .get('password')
+                    .hasError('required') &&
+                  !signupForm.get('password_group').get('password').pristine
+                "
+              >
+                Password is Required
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <div class="control-group">
+            <!-- Password (Confirm)-->
+            <label for="password_confirm"
+              >Repeat Password: <span class="lblError">*</span></label
+            >
+            <div class="controls">
+              <input
+                type="password"
+                id="password_confirm"
+                placeholder="Repeat Password"
+                class="form-control"
+                formControlName="confirmPassword"
+              />
+              <p
+                class="lblError"
+                *ngIf="
+                  signupForm
+                    .get('password_group')
+                    .hasError('passwordMatchError') &&
+                  !signupForm.get('password_group').get('confirmPassword')
+                    .pristine
+                "
+              >
+                Password doesn't Match
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <!-- Phones -->
+      <label for="Phones">Phone</label>
+      <div class="controls">
+        <button
+          id="Phones"
+          type="button"
+          class="btn btn-success"
+          (click)="onAddPhonesClick()"
+          style="width: 8%"
+        >
+          Add
+        </button>
+        <div
+          formArrayName="phones"
+          *ngFor="let item of getControls(); let i = index"
+        >
+          <input type="text" [formControlName]="i" class="form-control" />
+          <button
+            type="button"
+            class="btn btn-danger btn-sm pull"
+            (click)="onRemovePhonesClick(i)"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group text-center">
+      <button
+        id="cancel"
+        name="cancel"
+        class="btn btn-secondary"
+        style="margin-right:20px; width: 10%"
+      >
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="signupForm.invalid"
+        style="width: 10%"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
